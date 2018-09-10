@@ -112,16 +112,11 @@ const handleMessage = async (ctx, agent) => {
     }
 }
 
-const handleSurveyMessage = async (ctx) => {
-    await handleMessage(ctx, config.surveyAgent);
-}
-
-const handleAssistantMessage = async(ctx) => {
-    await handleMessage(ctx, config.agent);
+const handleAgentMessage = async(ctx) => {
+    await handleMessage(ctx, ctx.params.agent);
 }
 
 
 module.exports = {
-    'POST /chatbot' : handleAssistantMessage,
-    'POST /chatbot/survey' : handleSurveyMessage,
+    'POST /chatbot/:agent' : handleAgentMessage,
 };
