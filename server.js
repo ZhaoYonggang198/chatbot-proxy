@@ -7,6 +7,7 @@ const responseTime = require('./middlewares/response-time');
 const controllerRouter = require('./middlewares/controller-router');
 const logger = require('./utils/logger').logger('server');
 const config = require('./config')
+const cors = require('koa-cors')
 
 ///////////////////////////////////////////////////////////
 const model = require('./models/model');
@@ -15,10 +16,14 @@ model.init();
 ///////////////////////////////////////////////////////////
 const app = new Koa();
 app.keys = ['XIAODA-ASSTBOT'];
-
+const koaOptions = {
+    origin: true,
+    credentials: true
+};
 ///////////////////////////////////////////////////////////
 app.use(session(app));
 app.use(responseTime());
+app.use(cors(koaOptions));
 app.use(serve('./static'));
 app.use(views(__dirname + '/views', { map: {html: 'nunjucks' }}));
 app.use(koaBody({

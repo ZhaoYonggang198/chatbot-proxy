@@ -12,7 +12,7 @@ class Chatbot {
     async replyToText(user, text) {
         const data = { query   : { query : text, confidence : 1.0 }, 
                      session : user.id,
-                     agent   : this.agent, 
+                     ...this.agent, 
                      userContext : user };
 
         logger.debug('send to chatbot : ' + JSON.stringify(data));
@@ -113,10 +113,10 @@ const handleMessage = async (ctx, agent) => {
 }
 
 const handleAgentMessage = async(ctx) => {
-    await handleMessage(ctx, ctx.params.agent);
+    await handleMessage(ctx, {user: ctx.params.user, agent: ctx.params.agent});
 }
 
 
 module.exports = {
-    'POST /chatbot/:agent' : handleAgentMessage,
+    'POST /chatbot/:user/:agent' : handleAgentMessage,
 };
